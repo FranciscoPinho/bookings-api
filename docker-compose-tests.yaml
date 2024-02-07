@@ -1,0 +1,35 @@
+version: '3.9'
+
+networks:
+  test:
+
+services:
+  api-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile-tests
+    ports:
+      - '3000:3000'
+    networks:
+      - test
+    depends_on:
+      - postgres-tests
+    environment:
+      - PORT=3000
+      - CORS_ORIGIN=http://localhost
+      - PG_HOST=postgres-tests
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASS=password
+      - PG_DATABASE=park_bookings
+    volumes:
+      - '/usr/src/app/node_modules'
+
+  postgres-tests:
+    image: postgres:16
+    networks:
+      - test
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432

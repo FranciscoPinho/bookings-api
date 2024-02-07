@@ -1,0 +1,42 @@
+version: '3.9'
+
+networks:
+  main:
+
+volumes:
+  pgdata:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - main
+    depends_on:
+      - postgres
+    environment:
+      - PORT=3000
+      - CORS_ORIGIN=http://localhost
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASS=password
+      - PG_DATABASE=park_bookings
+    volumes:
+      - './src:/usr/src/app/src'
+      - './tests:/usr/src/app/tests'
+      - '/usr/src/app/node_modules'
+
+  postgres:
+    image: postgres:16
+    networks:
+      - main
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
