@@ -3,6 +3,8 @@
 - Admin users can create bookings and can get/edit/delete any existing booking.
 - Standard users can create new bookings and can get/edit/delete only the bookings they have created themselves
 For simplicity, user authentication will be done solely through an API token (no login, sessions, etc.).
+
+
 Steps to run:
 
 - npm run docker:build && npm run docker:start
